@@ -15,6 +15,7 @@
 #include <sys/snapshot.h>
 
 const char *g_pname;
+int do_original_name();
 
 void
 usage(void)
@@ -26,6 +27,7 @@ usage(void)
 	(void) fprintf(stderr, "\t%s -d <snap> <vol>\t\t(Delete snapshot)\n", g_pname);
 	(void) fprintf(stderr, "\t%s -r <snap> <vol>\t\t(Revert to snapshot)\n", g_pname);
 	(void) fprintf(stderr, "\t%s -s <snap> <vol> <mntpnt>\t(Mount snapshot)\n", g_pname);
+	(void) fprintf(stderr, "\t%s -o\t\t\t\t(Print original name)\n", g_pname);
 	exit(2);
 }
 
@@ -154,7 +156,7 @@ main(int argc, char **argv)
 {
 	g_pname = argv[0];
 
-	if (argc < 3 || argv[1][0] != '-' ||
+	if (argc < 2 || argv[1][0] != '-' ||
 	    argv[1][1] == '\0' || argv[1][2] != '\0') {
 		usage();
 	}
@@ -184,6 +186,10 @@ main(int argc, char **argv)
 			if (argc != 4)
 				usage();
 			return (do_revert(argv[3], argv[2]));
+		case 'o':
+			if (argc != 2)
+				usage();
+			return (do_original_name());
 		default:
 			usage();
 	}
